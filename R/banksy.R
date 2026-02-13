@@ -48,7 +48,7 @@ NULL
 #' @export
 RunBanksy <- function(object, lambda, assay='RNA', slot='data', use_agf=FALSE,
                       dimx=NULL, dimy=NULL, dimz=NULL, ndim=2,
-                      features='variable',
+                      features='variable', chunk_size=NULL,
                       group=NULL, split.scale=TRUE,
                       k_geom=15, n=2, sigma=1.5,
                       alpha=0.05, k_spatial=10, spatial_mode='kNN_median',
@@ -87,7 +87,7 @@ RunBanksy <- function(object, lambda, assay='RNA', slot='data', use_agf=FALSE,
     # Only center higher harmonics
     center[1] <- FALSE
     har <- Map(function(knn_df, M, center) {
-      x <- Banksy:::computeHarmonics(data_own, knn_df, M, center, verbose)
+      x <- Banksy:::computeHarmonics(data_own, knn_df, M, center, verbose, chunk_size)
       rownames(x) <- paste0(rownames(x), '.m', M)
       x
     }, knn_list, M, center)
